@@ -45,9 +45,14 @@ def show_pretty_nonptr(settings, value, context):
     if isinstance(context, Pointer) and isinstance(context.pointer, StaticValue) and get_name_for_address(settings, context.pointer.value)[:38] == 'ghczmprim_GHCziCString_unpackCStringzh':
         ret = '"'
         parsed_offset = settings.rodata_offset + value
-        while settings.binary[parsed_offset] != 0:
-            ret += chr(settings.binary[parsed_offset])
-            parsed_offset += 1
+        try:
+            while settings.binary[parsed_offset] != "\x00":
+                #print(settings.binary[parsed_offset])
+                #ret += chr(settings.binary[parsed_offset])
+                ret += (settings.binary[parsed_offset])
+                parsed_offset += 1
+        except:
+            print("err")
         ret += '"'
         return ret
     else:

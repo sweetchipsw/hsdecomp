@@ -56,12 +56,12 @@ def read_settings(opts):
     symtab = elffile.get_section_by_name(b'.symtab')
     for sym in symtab.iter_symbols():
         try:
-            name = str(sym.name, 'ascii')
+            name = str(sym.name)
             offset = sym['st_value']
             settings.name_to_address[name] = offset
             settings.address_to_name[offset] = name
-        except:
-            pass
+        except Exception as e:
+            print("err", e)
 
     settings.capstone.detail = True
 

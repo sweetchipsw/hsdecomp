@@ -19,7 +19,6 @@ def main():
     settings = metadata.read_settings(opts)
 
     # Parse the binary
-
     entry_pointer = StaticValue(value = settings.name_to_address[opts.entry])
 
     interpretations = {}
@@ -68,7 +67,10 @@ def main():
             lhs = pretty
             if settings.opts.show_types and pointer in types:
                 print(pretty, "::", show.show_pretty_type(settings, types[pointer], False))
+            #if lhs == "rsN_closure":
+                #continue
             print(lhs, "=", show.show_pretty_interpretation(settings, interpretations[pointer]))
+            print(lhs)
 
             optimize.foreach_use(interpretations[pointer], lambda ptr: (function_worklist if ptr in interpretations and isinstance(interpretations[ptr], Lambda) else worklist).append(ptr))
 
